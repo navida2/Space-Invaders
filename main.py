@@ -24,16 +24,22 @@ class ships(pygame.sprite.Sprite):
         self.x = x
         self. y = y
         self.image = pygame.image.load('ship2.png')
-        self.image = pygame.transform.scale(self.image, (100,100))
+        self.image = pygame.transform.scale(self.image, (50,70))
         self.rect = self.image.get_rect()
         self.rect.center = [x, y]
     def update(self):
         keys = pygame.key.get_pressed()
         if not game_over:
-            if keys[K_RIGHT] and self.rect.topright[0] < 864:
+            if keys[K_RIGHT]:
                 self.rect.x += self.velocity
-            if keys[K_LEFT] and self.rect.topleft[0] > 0:
+                print(self.rect.topright[0])
+            if keys[K_LEFT]:
+                print(self.rect.topleft[0])
                 self.rect.x += -self.velocity
+            if self.rect.left < 0:
+                self.rect.left = 0
+            if self.rect.right > SCREEN_WIDTH:
+                self.rect.right = SCREEN_WIDTH
 ship_group = pygame.sprite.Group()
 ship = ships(SCREEN_WIDTH // 2 - 50, 820)
 ship_group.add(ship)
