@@ -5,6 +5,7 @@ import json
 
 #Declare Global Vars
 pygame.init()
+pygame.mixer.music.load('MUSIC.mp3')
 FPS = 60
 SCREEN_WIDTH = 864
 SCREEN_HEIGHT = 936
@@ -14,6 +15,7 @@ game_over = False
 laser_frequency = 500
 rock_frequency = 2000
 SCORE = 0
+
 last_laser = pygame.time.get_ticks() - laser_frequency
 last_rock = pygame.time.get_ticks() - rock_frequency
 
@@ -107,7 +109,7 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x,y))
 
 ship_group = pygame.sprite.Group()
-ship = ships(SCREEN_WIDTH // 2 - 50, 820)
+ship = ships(SCREEN_WIDTH // 2, 820)
 ship_group.add(ship)
 laser_group = pygame.sprite.Group()
 rock_group = pygame.sprite.Group()
@@ -137,9 +139,10 @@ def runner():
     global last_rock
     global game_over
     global SCORE
+    pygame.mixer.music.play(-1)
     start_image = pygame.image.load('new-removebg-preview.png')
     start_image = pygame.transform.scale(start_image, (150, 150))
-    start_button = Button(500, 500, start_image)
+    start_button = Button(360, 700, start_image)
     started = False
     game_over = True
     while RUN:
@@ -184,8 +187,10 @@ def runner():
             game_over = True
             rock_group.empty()
             laser_group.empty()
+            SCORE = 0
+            ship.rect.center = [SCREEN_WIDTH // 2, 820]
             started = False
-            
+
         laser_group.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
